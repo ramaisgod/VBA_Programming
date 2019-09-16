@@ -1,0 +1,11 @@
+Function ReverseString(MyStr As String) As String
+' Return the string in reverse order
+Application.Volatile
+Dim i As Integer
+Dim txt As String
+On Error Resume Next
+For i = 0 To Len(MyStr)
+   txt = txt & VBA.Mid(MyStr, Len(MyStr) - i, 1)
+Next i
+ReverseString = txt
+End Function
