@@ -1,0 +1,31 @@
+Const AccessConnStr As String = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=D:\VBA Interview\Database1.accdb;user id=; password="
+
+Sub GetDataFromMS_Access()
+Dim conn As Object
+Dim rs_data As Object
+Set conn = CreateObject("ADODB.Connection")
+Set rs_data = CreateObject("ADODB.RecordSet")
+
+'Open MS-Access Connection
+conn.ConnectionString = AccessConnStr
+conn.Open
+
+'Open Record Set
+With rs_data
+    .ActiveConnection = conn
+    .Source = "Select * from client"
+    .Open
+End With
+
+
+'Table Header
+Sheet2.Range("a1").Select
+For Each Field In rs_data.Fields
+    ActiveCell.Value = Field.Name
+    ActiveCell.Offset(0, 1).Select
+Next Field
+
+'Copy Data to Excel
+Sheet2.Range("a2").CopyFromRecordset rs_data
+
+End Sub
