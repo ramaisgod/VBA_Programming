@@ -1,0 +1,31 @@
+Const SQLConnStr As String = "Provider=SQLOLEDB.1;Integrated Security=SSPI;Data Source=rk-pc;Initial Catalog=rmg_master"
+
+Sub GetDataFromSQL()
+Dim conn As New ADODB.Connection
+Dim rs As New ADODB.RecordSet
+Dim sql_cmd As String
+
+'Open SQL Connection
+conn.ConnectionString = SQLConnStr
+conn.Open
+
+'SQL Query
+sql_cmd = "select * from client_details"
+
+'Open Record Set
+Set rs.ActiveConnection = conn
+rs.Open sql_cmd, conn, adOpenForwardOnly, adLockReadOnly
+
+'Header for data
+[a1].Select
+For Each i In rs.Fields
+ActiveCell.Value = i.Name
+ActiveCell.Offset(0, 1).Select
+Next i
+
+'Copy to Excel
+ActiveSheet.Range("a2").CopyFromRecordset rs
+rs.Close
+conn.Close
+
+End Sub
