@@ -1,0 +1,26 @@
+Dim fso As New FileSystemObject
+
+Sub compileThefile()
+Dim FilePth As String
+Dim fl As File
+Dim wkb As Workbook
+
+Application.FileDialog(4).Title = "Please select the folder"
+Application.FileDialog(msoFileDialogFolderPicker).Show
+FilePth = Application.FileDialog(msoFileDialogFolderPicker).SelectedItems(1) & "\"
+[a1].Select
+For Each fl In fso.GetFolder(FilePth).Files
+    Debug.Print Range("a30").Value = fl.Name
+    'pick only .csv file
+    If Left(fso.GetExtensionName(fl.Name), 4) = "xlsm" Then
+    ' do your stuff
+    End If
+
+    If fl.DateLastModified > #5/16/2017# And fl.DateLastModified < #4/21/2019# Then
+        ActiveCell.Offset(1).Value = fl.Name
+        ActiveCell.Offset(1, 1).Value = fl.DateLastModified
+        ActiveCell.Offset(1).Select
+    End If
+Next fl
+
+End Sub
