@@ -1,0 +1,33 @@
+Dim fso As New FileSystemObject
+
+Sub MultipeFolderFileAccess()
+Dim pth As String
+Dim fl As File
+Application.FileDialog(msoFileDialogFolderPicker).Show
+pth = Application.FileDialog(msoFileDialogFolderPicker).SelectedItems(1) & "\"
+Call OpenAllFiles(pth)
+End Sub
+
+Sub OpenAllFiles(FilePth As String)
+Dim fl As File
+Dim SubFldr As Folder
+'display alerts
+Application.DisplayAlerts = False
+For Each fl In fso.GetFolder(FilePth).Files
+    Workbooks.Open fl
+    Application.WindowState = xlMaximized
+Next fl
+For Each SubFldr In fso.GetFolder(FilePth).SubFolders
+    MsgBox SubFldr.Path
+    Call OpenAllFiles(SubFldr.Path)
+Next SubFldr
+End Sub
+
+Sub CloseAllTheFiles()
+Dim wkb As Workbook
+For Each wkb In Workbooks
+    If wkb.Name <> ThisWorkbook.Name Then
+        Application.DisplayAlerts = False
+        wkb.Close False
+    End If
+Next wkb
