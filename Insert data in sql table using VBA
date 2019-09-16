@@ -1,0 +1,41 @@
+Const SQLConnStr As String = "Provider=SQLOLEDB.1;Integrated Security=SSPI;Data Source=rk-pc;Initial Catalog=rmg_master"
+
+Sub InsertNewRecord()
+Dim conn As New ADODB.Connection
+Dim rs As New ADODB.RecordSet
+Dim NextClientId As Integer
+conn.ConnectionString = SQLConnStr
+conn.Open
+
+On Error GoTo CloseConnection
+With rs
+    .ActiveConnection = conn
+    .Source = "client"
+    .LockType = adLockOptimistic
+    .CursorType = adOpenKeyset
+    .Open
+    
+    .MoveLast
+    NextClientId = .Fields("client_id").Value + 1
+    
+    On Error GoTo CloseRecordSet
+    .AddNew
+    .Fields("client_id").Value = NextClientId
+    .Fields("client_name").Value = "Wipro"
+    .Fields("registration_date").Value = #1/1/1995#
+    .Fields("industry_type").Value = "IT"
+    .Fields("location").Value = "Delhi"
+    .Update
+End With
+
+CloseRecordSet:
+    rs.CancelUpdate
+    rs.Close
+
+CloseConnection:
+    conn.Close
+
+Set conn = Nothing
+Set rs = Nothing
+
+End Sub
