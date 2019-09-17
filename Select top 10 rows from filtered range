@@ -1,0 +1,27 @@
+Sub TopRowsSelection()
+
+ Dim rngAF As Range, rngCell As Range, lCnt As Long, lRow As Long
+    Const lStart As Long = 2
+    Const lMax As Long = 10
+    
+    With Sheet1
+        If Not .AutoFilterMode Then
+            MsgBox "quitting--no filter"
+            Exit Sub
+        End If
+        If Not .FilterMode Then
+            MsgBox "quitting--has filters, but not filtered"
+            Exit Sub
+        End If
+         
+        Set rngAF = .AutoFilter.Range.Offset(1, 0) _
+            .Resize(.AutoFilter.Range.Rows.Count - 1, 1).SpecialCells(xlCellTypeVisible)
+         
+        For Each rngCell In rngAF
+            lCnt = lCnt + 1
+            lRow = rngCell.Row
+            If lCnt = lMax Then Exit For
+        Next rngCell
+        .Rows(lStart & ":" & lRow).Select   
+        
+    End With
