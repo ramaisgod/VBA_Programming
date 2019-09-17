@@ -1,0 +1,21 @@
+ Dim rng As Range
+    Dim rngF As Range
+    Dim rng10 As Range
+
+    Set rngF = Range("A2:A" & Cells(Rows.Count, "A").End(xlUp).Row).SpecialCells(xlCellTypeVisible)
+
+    For Each rng In Range("A2:A" & Cells(Rows.Count, "A").End(xlUp).Row)
+        If Not Intersect(rng, rngF) Is Nothing Then
+            If rng10 Is Nothing Then
+                Set rng10 = rng
+            Else
+                Set rng10 = Union(rng10, rng)
+            End If
+            
+            '---Select top 10 rows from one column---
+            If rng10.Cells.Count = 10 Then Exit For
+        End If
+    Next rng
+    Debug.Print rng10.Address
+    rng10.Select
+End Sub
