@@ -1,0 +1,17 @@
+Function Age(date1 As Date, date2 As Date)
+
+Dim y As Integer
+Dim m As Integer
+Dim d As Integer
+Dim Temp1 As Date
+Temp1 = DateSerial(Year(date2), Month(date1), Day(date1))
+y = Year(date2) - Year(date1) + (Temp1 > date2)
+m = Month(date2) - Month(date1) - (12 * (Temp1 > date2))
+d = Day(date2) - Day(date1)
+If d < 0 Then
+m = m - 1
+d = Day(DateSerial(Year(date2), Month(date2) + 1, 0)) + d + 1
+End If
+Age = y & " Years " & m & " Months " & d & " Days"
+
+End Function
