@@ -1,0 +1,46 @@
+Sub SaveOutlookAttachment()
+'-----------Variable & object Declartion -------------
+Dim ol As New Outlook.Application
+Dim olMail As Outlook.MailItem
+Dim fldr As Outlook.Folder
+Dim nmsp As Outlook.Namespace
+Dim i As Integer
+Dim j As Integer
+Dim pth As String
+'-----------Save Path ---------------------
+pth = "C:\Users\acer\Desktop\Output\"
+Set nmsp = ol.GetNamespace("MAPI")
+Set fldr = nmsp.GetDefaultFolder(olFolderInbox)
+Set fldr = fldr.Folders("Resume")
+j = 2
+fldr.Items.Sort "[ReceivedTime]", False
+
+For Each olMail In fldr.Items
+     For i = 1 To olMail.Attachments.Count
+
+        'If olMail.Subject Like "*Resume*" Or olMail.Subject Like "*CV*" Then
+        'If olMail.Sender.Address = "example@gmail.com" Then
+        If olMail.ReceivedTime <= "20-01-2015 19:16" Then
+    Range("A" & j).Value = olMail.ReceivedTime
+    Range("B" & j).Value = olMail.Attachments.Item(i).DisplayName
+    Range("C" & j).Value = olMail.Sender
+    Range("D" & j).Value = olMail.Subject
+    Range("E" & j).Value = olMail.To
+    Range("F" & j).Value = olMail.CC
+    Range("G" & j).Value = olMail.CreationTime
+    Range("H" & j).Value = olMail.Body
+    
+    j = j + 1
+
+        olMail.Attachments.Item(i).SaveAsFile pth & olMail.Attachments.Item(i).DisplayName
+        End If
+    Next i
+Next olMail
+
+Set fldr = Nothing
+Set nmsp = Nothing
+Set ol = Nothing
+Cells.WrapText = False
+
+MsgBox "Done"
+End Sub
