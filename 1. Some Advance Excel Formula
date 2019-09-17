@@ -1,0 +1,3 @@
+'---- Count All Value Except Zero -----
+=SUMPRODUCT(--(SUBTOTAL(9,OFFSET(G3:G23155,ROW(G3:G23155)-MIN(ROW(G3:G23155)),0,1))>0))
+
