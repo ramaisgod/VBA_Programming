@@ -1,3 +1,10 @@
 '---- Count All Value Except Zero -----
 =SUMPRODUCT(--(SUBTOTAL(9,OFFSET(G3:G23155,ROW(G3:G23155)-MIN(ROW(G3:G23155)),0,1))>0))
 
+'---- days between two dates month wise -----
+Start Date	End Date	  1-Jan-19	  1-Feb-19	  1-Mar-19
+2-Feb-19	  1-Mar-19	    0	          27	        1
+16-Jan-19	  27-Mar-19	    16	        28	        27
+3-Feb-19	  11-Mar-19	    0	          26	        11
+
+=MAX(0,MIN(EOMONTH(C$1,0),$B2)-MAX(C$1,$A2)+1)
